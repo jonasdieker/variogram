@@ -7,9 +7,9 @@ This was produced as part of my master's thesis which focussed on learning gener
 Install from source.
 
 ```console
-    git clone <link>
-    cd variogram_analysis
-    pip install .
+git clone git@github.com:jonasdieker/variogram.git
+cd variogram_analysis
+pip install .
 ```
 
 ## Usage
