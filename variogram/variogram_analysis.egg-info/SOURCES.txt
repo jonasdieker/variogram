@@ -1,0 +1,16 @@
+LICENSE.txt
+README.md
+setup.py
+variogram/src/IndexPairGenerator.py
+variogram/src/Variogram.py
+variogram/src/VariogramFitting.py
+variogram/src/VisualizeVariogram.py
+variogram/src/__init__.py
+variogram/src/compute_variogram.py
+variogram/src/utils.py
+variogram/test/__init__.py
+variogram/variogram_analysis.egg-info/PKG-INFO
+variogram/variogram_analysis.egg-info/SOURCES.txt
+variogram/variogram_analysis.egg-info/dependency_links.txt
+variogram/variogram_analysis.egg-info/requires.txt
+variogram/variogram_analysis.egg-info/top_level.txt
