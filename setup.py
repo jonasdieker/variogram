@@ -7,7 +7,7 @@ with open("requirements.txt", "r") as f:
     requirements = f.read()
 
 setup(
-    name="variogram_analysis",
+    name="variogram",
     version="0.0.10",
     description="A tool to quantify the spatio-temporal discontinuity of sparse data",
     package_dir={"": "variogram"},
