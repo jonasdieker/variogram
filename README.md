@@ -2,6 +2,9 @@
 
 This was produced as part of my master's thesis which focussed on learning generative models from sparse data.
 
+The package expects two dimensions in space and one in time. If 3D variogram computation is too costly,
+one can choose to combine the two dimenions in space into a single spatial dimension.
+
 ## Installation
 
 Install from source.
@@ -14,22 +17,38 @@ pip install .
 
 ## Usage
 
-### Computing the variogram from a csv file containing sparse data.
+### Load single csv file.
 
 ```python
 import variogram
 
-# make sure config.yaml file contains all meta-data, including path of .csv file
-config = load_config("config.yaml")
+# specify file
+dataset = variogram.Dataset("<file_name.csv>")
 
-# load data
-dataset = variogram.Dataset(config["data_file"])
+# loading single file
+data = dataset.load_single_file_by_idx()
+```
 
-# compute the variogram
-v = variogram.Variogram(data)
+### Load entire folder of csv files.
+
+```python
+import variogram
+
+# specify path to folder
+dataset = variogram.Dataset("<path_to_folder>")
+
+# load entire folder of files into DataFrame
+data = dataset.load_all_files()
+```
+
+### Computing the variogram from loaded data.
+
+```python
+# compute the variogram, last coordinate axis needs to be time
+v = variogram.Variogram(data, coordinate_axes=("x", "y", "time"), variables=("var1", "var2"))
 
 # Either data is already detrended or use simple normal score detrending
-v.detrend(detrend_var="lat")
+v.detrend()
 
 # compute variogram
 v.build_variogram(res_tuple=(1, 1, 1), num_workers=2, chunk_size=1e6, detrend=False)
@@ -45,9 +64,10 @@ variogram.save_variogram_to_npy(v, file_path)
 v_vis = VisualizeVariogram(v)
 
 # or visualize variogram from file
-v_vis = VisualizeVariogram.read_varogram_from_file(<file_name.npy>)
+v_vis = VisualizeVariogram()
+v_vis.read_varogram_from_file("<file_name.npy>")
 
-# change variogram resolution
+# change variogram resolution to decrease noise in variogram
 v_vis.decrease_variogram_res(res_tuple=(5, 5, 5))
 
 # show histogram of bins
@@ -68,3 +88,10 @@ If the code breaks (e.g. produces a seg fault) it is likely due to insufficient 
 - Reduce the range of data for which the variogram is being compute.
 - Reduce the resolution of the variogram computation (i.e. increase *res_tuple* values).
 - Reduce the number of dimensions of the variogram.
+
+
+## Future Extensions
+- [ ] Support visualizing when there are not exactly 2 variables.
+- [ ] Support non-linear bins.
+- [ ] More flexible support for dimensions/axis types.
+- [ ] Faster performance by each thread having own copy of bins -> results in more RAM usage.

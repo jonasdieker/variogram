@@ -16,6 +16,19 @@ def load_config(yaml_file_config_path: str) -> Dict:
     return config
 
 
+def setup_logger(log_root, now_string):
+    logging.basicConfig(
+        format="[%(levelname)s | %(asctime)s] %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+        level=logging.INFO,
+        handlers=[
+            logging.StreamHandler(sys.stdout),
+            logging.FileHandler(os.path.join(log_root, f'{now_string}.log'))
+        ])
+    logger = logging.getLogger()
+    return logger
+
+
 def save_tuned_empirial_variogram_3d(vvis: VisualizeVariogram, view_range: List[int], file_path: str):
     """Convert hand-tuned variogram to dataframe and save."""
 
@@ -65,7 +78,7 @@ def save_variogram_to_npy(variogram: Variogram, file_path: str):
                     "bins_count": variogram.bins_count,
                     "res": variogram.res_tuple,
                     "units": variogram.units,
-                    "detrend_metrics": variogram.bin_statistics
+                    "detrend_metrics": variogram.data_statistics
                     }
     np.save(file_path, data_to_save)
     print(f"\nSaved variogram data to: {file_path}")
